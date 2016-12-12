@@ -1,0 +1,43 @@
+<div class="container" >
+	<div class="row">
+		<div class="col-md-12">
+			<h2>
+				<a ng-href="{{targetBook.url}}" target="_blank">{{targetBook.name}}</a> 원문 다운로드
+				<small>권별로 받으실 수 있습니다. <i class="fa fa-spinner" ng-class="{'fa-spin': bookListLoading}"></i></small>
+
+			</h2>
+
+			<div class="btn-group">
+				<button type="button" class="btn btn-info">EOL(end of line) : {{eol.symbol}}</button>
+				<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="caret"></span>
+					<span class="sr-only">Toggle Dropdown</span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a class="active" href="" ng-click="setEol('CRLF')" ng-class="{'active': eol==='CRLF' }"> Windows (CRLF) </a></li>
+					<li><a href="" ng-click="setEol('LF')" ng-class="{'active': eol==='LF' }"> Non Windows (LF) </a></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="list-group">
+				<a href="" class="list-group-item"
+					ng-repeat="vol in volList"
+					ng-click="dnTxt(vol.volume_id, vol.volume_nm, vol.content_total, $index)"
+					ng-class="{ 'active': dnIdx[$index] }">
+					<i ng-hide="dnIdx[$index]" class="fa fa-download fa-fw fa-lg" aria-hidden="true"></i>
+					<i ng-show="dnIdx[$index]" class="fa fa-spinner fa-fw fa-lg fa-spin" aria-hidden="true"></i>
+					<!-- <i ng-show="dnIdx[$index]" class="fa fa-spinner fa-wd fa-lg" ng-class="{'fa-spin': bookDownloading[$index]}"></i> -->
+					&nbsp; {{ vol.volume_id }} &nbsp; [  {{ vol.volume_nm }}  ] &nbsp; total lines:{{vol.content_total}}
+					<!-- <span class="badge" ng-bind="getCount( vol.volume_id, counter )"></span> -->
+					<span class="badge" ng-bind="counter[vol.volume_id] || 0"></span>
+				</a>
+			</div>
+
+		</div>
+	</div>
+</div>
