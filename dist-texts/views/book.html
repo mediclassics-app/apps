@@ -1,7 +1,7 @@
 <div class="container" >
 	<div class="row">
 		<div class="col-md-12">
-			<h2>
+			<h2 id="mybook">
 				<a ng-href="{{targetBook.url}}" target="_blank">{{targetBook.name}}</a> 원문 다운로드
 				<small>권별로 받으실 수 있습니다. <i class="fa fa-spinner" ng-class="{'fa-spin': bookListLoading}"></i></small>
 
@@ -28,7 +28,8 @@
 				<a href="" class="list-group-item"
 					ng-repeat="vol in volList"
 					ng-click="dnTxt(vol.volume_id, vol.volume_nm, vol.content_total, $index)"
-					ng-class="{ 'active': dnIdx[$index] }">
+					ng-class="{ 'active': dnIdx[$index] }"
+					ng-init="$last && eventfinished()">
 					<i ng-hide="dnIdx[$index]" class="fa fa-download fa-fw fa-lg" aria-hidden="true"></i>
 					<i ng-show="dnIdx[$index]" class="fa fa-spinner fa-fw fa-lg fa-spin" aria-hidden="true"></i>
 					<!-- <i ng-show="dnIdx[$index]" class="fa fa-spinner fa-wd fa-lg" ng-class="{'fa-spin': bookDownloading[$index]}"></i> -->

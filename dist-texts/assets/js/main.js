@@ -9,7 +9,7 @@ angular.module("DistText", ["ngSanitize", "ngRoute", 'FileSaver', 'firebase'])
 				// "Content-Type": "application/json;charset=utf-8"
                 "Content-Type": "application/json"
 			},
-            data: "" 
+            data: ""
             // 이게 없으면 Content-Type이 설정되지 않음 // https://stackoverflow.com/questions/24895290/content-type-header-not-being-set-with-angular-http
 		}
 	},
@@ -55,7 +55,11 @@ angular.module("DistText", ["ngSanitize", "ngRoute", 'FileSaver', 'firebase'])
     $scope.targetBooks = CONS.booklist
 })
 
-.controller("BookDownloadCtrl", function ( $scope, $http, CONS, $routeParams, saveAs, countDownloads ) {
+.controller("BookDownloadCtrl", function ( $scope, $http, $rootScope, $location, $anchorScroll, $routeParams, saveAs, countDownloads, CONS ) {
+
+	$rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+		console.log("Route change success")
+	})
 
 	// Init variables
     $scope.targetBook = CONS.booklist.filter(function(book){return book.id === $routeParams.bookId})[0]
@@ -99,10 +103,13 @@ angular.module("DistText", ["ngSanitize", "ngRoute", 'FileSaver', 'firebase'])
 	$http.get($scope.targetBook.VolUrl , CONS.api.conf ).then( get_VolList, fail)
 
     function get_VolList( res ){
-		console.log( res.status )
         $scope.volList = res.data.DATA
         offFlag("bookListLoading")
     }
+
+	$scope.eventfinished = function(){
+		$location.hash('mybook'); $anchorScroll();
+	}
 
     function fail( res ){
 		console.log( res )
