@@ -1,0 +1,176 @@
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Hanzi Text Normalizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
+    <style>
+		textarea.form-control {
+		  height: 100%;
+		  opacity: 50;
+		  font-size: 18px;
+		}
+		
+		body {
+      font-family: Verdana, Arial, Helvetica, sans-serif, times, "Heiti TC", PMingLiU, PMingLiu-ExtB, SimSun, SimSun-ExtB, HanaMinA, HanaMinB;
+    }
+    </style>
+  </head>
+
+  <body ng-app="hanzitn">
+  	<!--header-->
+    <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><span>HanziTN</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="active">
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#">Contacts</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!--main-->
+    <div class="section" ng-controller="duplicationsMergeCtrl">
+      <div class="container">
+        <div class="row">
+        	<h1>
+        	  <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': dupProcessing}"></i>
+        	  Merge Hanzi duplications
+			  	<button class="btn btn-primary btn-lg" ng-click="mergeDuplications()">TN</button>
+			</h1>
+        </div>
+        <div class="row" style="height:30%">
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-model="rawTextdup"
+            	ng-trim="true"
+            ></textarea>
+          </div>
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-bind="mergedTextdup"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" ng-controller="variantsMergeCtrl">
+      <div class="container">
+        <div class="row">
+        	<h1>
+        	<i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
+        	  Merge Hanzi Variants
+        	  <button class="btn btn-primary btn-lg" ng-click="mergeVariants()">TN</button>
+  				<div class="btn-group">
+  					<a class="btn btn-lg btn-warning" ng-class="{'active': tntype==='general'}" ng-click="tntype='general'" >General</a>
+  					<a class="btn btn-lg btn-warning" ng-class="{'active': tntype!=='general'}" ng-click="tntype='extention'" >KM-extention</a>
+  				</div>
+        	  </h1>
+
+        </div>
+        <div class="row" style="height:30%">
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-model="rawTextvar"
+            	ng-trim="true"
+            ></textarea>
+          </div>
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-bind="mergedTextvar"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section" ng-controller="replaceCtrl">
+      <div class="container">
+
+        <form class="form-inline">
+          <h1>Replace
+            <button type="submit" class="btn btn-primary btn-lg" ng-click="replaceAll()">Replace</button>
+            <button type="submit" class="btn btn-info btn-lg" ng-click="clone()">Clone</button>
+          </h1>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Before(Regx)" ng-model="bf">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="After" ng-model="af">
+          </div>
+        </form>
+
+        <div class="row" style="height:30%">
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-model="rawText"
+            	ng-trim="true"
+            ></textarea>
+          </div>
+          <div class="col-md-6">
+            <textarea class="form-control" rows="5"
+            	ng-bind="mergedText"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--footer-->
+    <footer class="section section-primary" ng-controller="footerCtrl">
+      <div class="container">
+
+        <div class="row">
+        	<h1>Appendix</h1>
+          	<div class="col-sm-6 text-left">
+				<b>Dict Ref</b>
+				<p>
+					<a class="btn btn-info btn-sm" ng-repeat="dict in dictRefAddress" ng-href="{{dict.url}}" target="_blank" ng-bind="dict.name"></a>
+				</p>
+				<b>External Ref</b>
+              	<p>
+  					<a class="btn btn-info btn-sm" ng-repeat="eref in externalRefs" ng-href="{{eref.url}}" target="_blank" ng-bind="eref.name"></a>
+              	</p>
+          </div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-md-12 hidden-lg hidden-md hidden-sm text-left">
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div>
+            <!-- <div class="row">
+              <div class="col-md-12 hidden-xs text-right">
+                <a href="#"><i class="fa fa-3x fa-fw fa-github text-inverse"></i></a>
+              </div>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.min.js"></script>
+<script src="https://cdn.rawgit.com/pinedance/f53dd1b0402c4574467c/raw/fe0bad830381fcd7aea7c8b959384fe800f12529/prototype.js"></script>
+<script src="controller.js"></script>
+
+</html>
