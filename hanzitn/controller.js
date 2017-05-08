@@ -1,7 +1,7 @@
 angular.module("hanzitn", ["ngSanitize"])
 
 .constant("api", {
-		rooturl: "https://kmapibox.mediclassics.org" + "/api/tn/",
+		rooturl: "https://kmapibox.mediclassics.org" + "/api/",
 		conf : {
 			headers : {
 			},
@@ -34,6 +34,19 @@ angular.module("hanzitn", ["ngSanitize"])
 	};
 })
 
+.factory('Tools', function($http, api){
+
+	function diff(text1, text2){
+		var reqUrl = api.rooturl + 'diff'
+		return $http.post( reqUrl, {"text1": text1, "text2": text2}, api.conf )
+	}
+
+	return {
+		"diff": diff
+	}
+
+
+})
 
 .controller("duplicationsMergeCtrl", function ($scope, $http, api, Board) {
 
@@ -41,11 +54,11 @@ angular.module("hanzitn", ["ngSanitize"])
 
 	$scope.mergeDuplications = function(){
 		$scope.dupProcessing = true;
-		var reqUrl = api.rooturl + 'duplications' //'?text=' + encodeURIComponent($scope.rawTextdup)
+		var reqUrl = api.rooturl + 'tn/' + 'duplications' //'?text=' + encodeURIComponent($scope.rawTextdup)
 		// console.log(reqUrl)
 		$http.post( reqUrl, {text: $scope.rawTextdup}, api.conf ).then(function(res){
 			$scope.mergedTextdup = res.data.output;
-			Board.addRst( $scope.mergedTextdup )
+			Board.addRst( [$scope.rawTextdup, $scope.mergedTextdup] )
 			$scope.dupProcessing = false;
 		})
 	}
@@ -61,11 +74,11 @@ angular.module("hanzitn", ["ngSanitize"])
 	$scope.mergeVariants = function(){
 		console.log($scope.tntype )
 		$scope.valProcessing = true;
-		var reqUrl = ($scope.tntype==='general')? api.rooturl + 'variants' : api.rooturl + 'variants?extention=true'  // '?text=' + encodeURIComponent($scope.rawTextvar)
+		var reqUrl = ($scope.tntype==='general')? api.rooturl + 'tn/' + 'variants' : api.rooturl + 'tn/' + 'variants?extention=true'  // '?text=' + encodeURIComponent($scope.rawTextvar)
 		// console.log(reqUrl)
 		$http.post( reqUrl, {text: $scope.rawTextvar}, api.conf ).then(function(res){
 			$scope.mergedTextvar = res.data.output;
-			Board.addRst( $scope.mergedTextvar )
+			Board.addRst( [$scope.rawTextvar, $scope.mergedTextvar] )
 			$scope.valProcessing = false;
 		})
 	}
@@ -84,18 +97,40 @@ angular.module("hanzitn", ["ngSanitize"])
 	}
 
 	$scope.clone = function(){
-		$scope.rawText = Board.getLastRst()
+		$scope.rawText = Board.getLastRst()[1]
 	}
 
 })
 
+.controller("diffCtrl", function ($scope, Board, Tools) {
+
+	$scope.diff = function(){
+		$scope.valProcessing = true;
+
+		var texts = Board.getLastRst()
+		Tools.diff( texts[0], texts[1] ).then(function(res){
+
+			$scope.diffrst = res.data.output.html
+			$scope.valProcessing = false;
+		})
+	}
+
+	$scope.reset = function(){
+
+		$scope.diffrst = ""
+
+	}
+
+})
+
+
 .controller("footerCtrl", function($scope, api){
 	$scope.dictRefAddress = [
-		{"name": "duplications", 		"url": api.rooturl + "/dict/duplications" + "?type=tsv"},
-		{"name": "variants", 			"url": api.rooturl + "/dict/customvariants" + "?type=tsv"},
-		{"name": "variantsExtention", 			"url": api.rooturl + "/dict/customvariantsExtention" + "?type=tsv"},
-		{"name": "variants group", 			"url": api.rooturl + "/dict/variantsgroup" + "?type=tsv"},
-		{"name": "variantsExtention group", 	"url": api.rooturl + "/dict/variantsExtention" + "?type=tsv"}
+		{"name": "duplications", 		"url": api.rooturl + "tn/dict/duplications" + "?type=tsv"},
+		{"name": "variants", 			"url": api.rooturl + "tn/dict/customvariants" + "?type=tsv"},
+		{"name": "variantsExtention", 			"url": api.rooturl + "tn/dict/customvariantsExtention" + "?type=tsv"},
+		{"name": "variants group", 			"url": api.rooturl + "tn/dict/variantsgroup" + "?type=tsv"},
+		{"name": "variantsExtention group", 	"url": api.rooturl + "tn/dict/variantsExtention" + "?type=tsv"}
 	]
 
 	$scope.externalRefs = [
