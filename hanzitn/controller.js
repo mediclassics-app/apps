@@ -13,23 +13,18 @@ angular.module("hanzitn", ["ngSanitize"])
 
 .factory('Board', function(){
 
-	var results = []
+	var lastest = []
 
 	function addRst( newrst ){
-		results.push (newrst)
-	}
-
-	function getRst(){
-		return results
+		lastest = newrst
 	}
 
 	function getLastRst(){
-		return results[results.length - 1]
+		return lastest
 	}
 
   	return {
   		"addRst": addRst,
-  		"getRst": getRst,
   		"getLastRst": getLastRst
 	};
 })
@@ -62,7 +57,6 @@ angular.module("hanzitn", ["ngSanitize"])
 			$scope.dupProcessing = false;
 		})
 	}
-
 
 })
 
