@@ -6,7 +6,7 @@ angular.module("hanzitn", ["ngSanitize"])
 			headers : {
 			},
 			data: ""
-			// 이게 없으면 Content-Type이 설정되지 않음 // https://stackoverflow.com/questions/24895290/content-type-header-not-being-set-with-angular-http
+			//// 이게 없으면 Content-Type이 설정되지 않음 // https://stackoverflow.com/questions/24895290/content-type-header-not-being-set-with-angular-http
 		}
 	}
 )
