@@ -1,7 +1,7 @@
 angular.module("hanzitn", ["ngSanitize"])
 
 .constant("api", {
-		rooturl: "https://kmapibox.mediclassics.org" + "/api/",
+		rooturl: "https://kmapibox.mediclassics.kr" + "/api/",
 		conf : {
 			headers : {
 			},
