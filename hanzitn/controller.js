@@ -53,7 +53,7 @@ angular.module("hanzitn", ["ngSanitize"])
 		// console.log(reqUrl)
 		$http.post( reqUrl, {text: $scope.rawTextdup}, api.conf ).then(function(res){
 			$scope.mergedTextdup = res.data.output;
-			Board.addRst( [$scope.rawTextdup, $scope.mergedTextdup] )
+			Board.addRst( [$scope.rawTextdup + "", $scope.mergedTextdup + ""] )
 			$scope.dupProcessing = false;
 		})
 	}
@@ -72,7 +72,7 @@ angular.module("hanzitn", ["ngSanitize"])
 		// console.log(reqUrl)
 		$http.post( reqUrl, {text: $scope.rawTextvar}, api.conf ).then(function(res){
 			$scope.mergedTextvar = res.data.output;
-			Board.addRst( [$scope.rawTextvar, $scope.mergedTextvar] )
+			Board.addRst( [$scope.rawTextvar + "", $scope.mergedTextvar + ""] )
 			$scope.valProcessing = false;
 		})
 	}
@@ -88,10 +88,23 @@ angular.module("hanzitn", ["ngSanitize"])
 		// var rgxAf = new RegExp($scope.bf, "gi")
 		var rgxAf = $scope.af
 		$scope.mergedText = $scope.rawText.replace(rgxBf, rgxAf)
+		Board.addRst( [$scope.rawText + "", $scope.mergedText + ""] )
 	}
 
 	$scope.clone = function(){
 		$scope.rawText = Board.getLastRst()[1]
+	}
+
+})
+
+.controller("diffTextCtrl", function ($scope, Board, Tools) {
+
+	$scope.dumpTexts = function(){
+		Board.addRst( [$scope.text1 + "", $scope.text2 + ""] )
+	}
+
+	$scope.reset = function(){
+		$scope.text1 = $scope.text2 = ""
 	}
 
 })
@@ -116,7 +129,6 @@ angular.module("hanzitn", ["ngSanitize"])
 	}
 
 })
-
 
 .controller("footerCtrl", function($scope, api){
 	$scope.dictRefAddress = [

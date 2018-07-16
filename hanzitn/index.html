@@ -16,7 +16,7 @@
 		}
 
 		body {
-      		font-family: Verdana, Arial, Helvetica, sans-serif, times, "Heiti TC", PMingLiU, PMingLiu-ExtB, SimSun, SimSun-ExtB, HanaMinA, HanaMinB;
+      		font-family: Verdana, Arial, Helvetica, sans-serif, times, "Heiti TC", PMingLiU, PMingLiu-ExtB, SimSun, SimSun-ExtB, HanaMinB;
     	}
 
 		.desc {
@@ -30,6 +30,15 @@
 		ins {
 			background:#e6ffe6;
 		}
+
+    .replace {
+      background: aliceblue;
+    }
+
+    .difftexts {
+      background: oldlace;
+    }
+
     </style>
   </head>
 
@@ -60,7 +69,7 @@
     </div>
 
     <!--main-->
-    <div class="section" ng-controller="duplicationsMergeCtrl">
+    <div class="section duplications merge" ng-controller="duplicationsMergeCtrl">
       <div class="container">
         <div class="row">
 			<div class="col-md-6">
@@ -92,7 +101,7 @@
       </div>
     </div>
 
-    <div class="section" ng-controller="variantsMergeCtrl">
+    <div class="section variants merge" ng-controller="variantsMergeCtrl">
       <div class="container">
         <div class="row">
 			<div class="col-md-6">
@@ -130,7 +139,7 @@
       </div>
     </div>
 
-    <div class="section" ng-controller="replaceCtrl">
+    <div class="section replace" ng-controller="replaceCtrl">
       <div class="container">
 
         <form class="form-inline">
@@ -169,8 +178,46 @@
       </div>
     </div>
 
+  <div class="section difftexts" ng-controller="diffTextCtrl">
+    <div class="container" >
 
-	<div class="section" ng-controller="diffCtrl">
+      <div class="row">
+    <div class="col-md-6">
+          <h1>
+            <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
+              Diff Texts
+          </h1>
+          <p class="desc">
+            텍스트 차이를 검토합니다. <small>'Dump'를 누른 후 'Check result'에서 확인하세요.</small>
+          </p>
+      </div>
+      <div class="col-md-6">
+      <h1>
+        <button class="btn btn-primary btn-lg" ng-click="dumpTexts()">Dump</button>
+					<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
+      </h1>
+      </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5"  style="height:30%"
+            ng-model="text1"
+          	ng-trim="true"
+          ></textarea>
+        </div>
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5"  style="height:30%"
+            ng-model="text2"
+            ng-trim="true"
+          ></textarea>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="section diffcheck" ng-controller="diffCtrl">
       <div class="container">
         <div class="row">
 			<div class="col-md-6">
