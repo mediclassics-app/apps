@@ -136,7 +136,7 @@ angular.module("hanzitn", ["ngSanitize"])
 		{"name": "variants", 			"url": api.rooturl + "tn/dict/customvariants" + "?type=tsv"},
 		{"name": "variantsExtention", 			"url": api.rooturl + "tn/dict/customvariantsExtention" + "?type=tsv"},
 		{"name": "variants group", 			"url": api.rooturl + "tn/dict/variantsgroup" + "?type=tsv"},
-		{"name": "variantsExtention group", 	"url": api.rooturl + "tn/dict/variantsExtention" + "?type=tsv"}
+		{"name": "variantsExtention group", 	"url": api.rooturl + "tn/dict/variantsgroupExtention" + "?type=tsv"}
 	]
 
 	$scope.externalRefs = [
