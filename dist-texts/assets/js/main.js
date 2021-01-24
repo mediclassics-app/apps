@@ -5,7 +5,7 @@ angular.module("DistText", ["ngSanitize", "ngRoute", 'FileSaver', 'firebase'])
 		rooturl: "https://mediclassics.kr/api/books/",
 		conf : {
 			headers : {
-				"Authorization": "ae9e82611a2d4f01a388da29e3e479d5",
+				"Authorization": "5fe23edf9dec4c718e188073e46274bd",
 				// "Content-Type": "application/json;charset=utf-8"
                 "Content-Type": "application/json"
 			},
