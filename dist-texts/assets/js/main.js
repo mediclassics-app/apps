@@ -158,7 +158,7 @@ angular.module("DistText", ["ngSanitize", "ngRoute", 'FileSaver', 'firebase'])
     // $scope.bookDownloading = []
 
     $scope.dnTxt = function( volIdx, volname, lastIdx, dnIdx ){
-        if(!confirm("위 [사용권한]에 동의하며\n다운로드를 계속 하시겠습니까?\n(30초 정도 소요됩니다)")){return}
+        if(!confirm("위 [사용권한]에 동의하며\n다운로드를 계속 하시겠습니까?\n(1-2분 정도 소요됩니다)")){return}
 
         $scope.dnIdx[dnIdx] = true
         // onFlag("bookDownloading", dnIdx)
