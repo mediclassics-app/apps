@@ -1,35 +1,35 @@
 <html>
 
-  <head>
-    <meta charset="utf-8">
-    <title>Hanzi Text Normalizer</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="https://pingendo.github.io/pingendo-bootstrap/themes/default/bootstrap.css" rel="stylesheet" type="text/css">
-    <style>
-		textarea.form-control {
-		  height: 100%;
-		  opacity: 50;
-		  font-size: 18px;
-		}
+<head>
+  <meta charset="utf-8">
+  <title>Hanzi Text Normalizer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="text/javascript" src="assets/jquery.min.js"></script>
+  <script type="text/javascript" src="assets/bootstrap.min.js"></script>
+  <link href="assets/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="assets/bootstrap.css" rel="stylesheet" type="text/css">
+  <style>
+    textarea.form-control {
+      height: 100%;
+      opacity: 50;
+      font-size: 18px;
+    }
 
-		body {
-      		font-family: Verdana, Arial, Helvetica, sans-serif, times, "Heiti TC", PMingLiU, PMingLiu-ExtB, SimSun, SimSun-ExtB, HanaMinB;
-    	}
+    body {
+      font-family: Verdana, Arial, Helvetica, sans-serif, times, "Heiti TC", PMingLiU, PMingLiu-ExtB, SimSun, SimSun-ExtB, HanaMinB;
+    }
 
-		.desc {
-			text-align: right;
-		}
+    .desc {
+      text-align: right;
+    }
 
-		del {
-			background:#ffe6e6;
-		}
+    del {
+      background: #ffe6e6;
+    }
 
-		ins {
-			background:#e6ffe6;
-		}
+    ins {
+      background: #e6ffe6;
+    }
 
     .replace {
       background: aliceblue;
@@ -38,179 +38,159 @@
     .difftexts {
       background: oldlace;
     }
+  </style>
+</head>
 
-    </style>
-  </head>
-
-  <body ng-app="hanzitn">
-  	<!--header-->
-    <div class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/"><span>Hanzi Text Normalizer</span></a>
-        </div>
-        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li class="active">
-              <a href="https://mediclassics.github.io">Mediclassics Info</a>
-            </li>
-            <li>
-              <a href="https://github.com/mediclassics/apps/issues">Contacts</a>
-            </li>
-          </ul>
-        </div>
+<body ng-app="hanzitn">
+  <!--header-->
+  <div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/"><span>Hanzi Text Normalizer</span></a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="active">
+            <a href="https://mediclassics.github.io">Mediclassics Info</a>
+          </li>
+          <li>
+            <a href="https://github.com/mediclassics/apps/issues">Contacts</a>
+          </li>
+        </ul>
       </div>
     </div>
+  </div>
 
-    <!--main-->
-    <div class="section duplications merge" ng-controller="duplicationsMergeCtrl">
-      <div class="container">
-        <div class="row">
-			<div class="col-md-6">
-        		<h1>
-        	  		<i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': dupProcessing}"></i>
-        	  		Merge Hanzi Duplications
-				</h1>
-				<p class="desc">다중코드자를 통합합니다.</p>
-			</div>
-			<div class="col-md-6">
-				<h1>
-					<button class="btn btn-primary btn-lg" ng-click="mergeDuplications()">TN</button>
-				</h1>
-			</div>
-		</div>
-        <div class="row">
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5" style="height:30%"
-            	ng-model="rawTextdup"
-            	ng-trim="true"
-            ></textarea>
-          </div>
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5" style="height:30%"
-            	ng-bind="mergedTextdup"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section variants merge" ng-controller="variantsMergeCtrl">
-      <div class="container">
-        <div class="row">
-			<div class="col-md-6">
-        		<h1>
-        			<i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
-        	  		Merge Hanzi Variants
-		  		</h1>
-				<p class="desc">
-					이체자를 통합합니다.
-				</p>
-		  	</div>
-		  	<div class="col-md-6">
-				<h1>
-					<button class="btn btn-primary btn-lg" ng-click="mergeVariants()">TN</button>
-	    			<div class="btn-group">
-	    				<a class="btn btn-lg btn-warning" ng-class="{'active': tntype==='general'}" ng-click="tntype='general'" >General</a>
-	    				<a class="btn btn-lg btn-warning" ng-class="{'active': tntype!=='general'}" ng-click="tntype='extention'">KM-extention</a>
-	    			</div>
-				</h1>
-		  	</div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5"  style="height:30%"
-            	ng-model="rawTextvar"
-            	ng-trim="true"
-            ></textarea>
-          </div>
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5"  style="height:30%"
-            	ng-bind="mergedTextvar"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section replace" ng-controller="replaceCtrl">
-      <div class="container">
-
-        <form class="form-inline">
-			<div class="col-md-6">
-				<h1>Replace	</h1>
-			</div>
-        	<div class="col-md-6">
-				<h1>
-            		<button type="submit" class="btn btn-primary btn-lg" ng-click="replaceAll()">Replace</button>
-            		<button type="submit" class="btn btn-info btn-lg" ng-click="clone()">Clone</button>
-				</h1>
-			</div>
-
-          	<div class="form-group">
-            	<input type="text" class="form-control" placeholder="Before(Regx)" ng-model="bf">
-          	</div>
-          	<div class="form-group">
-            	<input type="text" class="form-control" placeholder="After" ng-model="af">
-          	</div>
-
-        </form>
-
-        <div class="row" >
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5" style="height:30%"
-            	ng-model="rawText"
-            	ng-trim="true"
-            ></textarea>
-          </div>
-          <div class="col-md-6">
-            <textarea class="form-control" rows="5" style="height:30%"
-            	ng-bind="mergedText"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  <div class="section difftexts" ng-controller="diffTextCtrl">
-    <div class="container" >
-
+  <!--main-->
+  <div class="section duplications merge" ng-controller="duplicationsMergeCtrl">
+    <div class="container">
       <div class="row">
-    <div class="col-md-6">
+        <div class="col-md-6">
+          <h1>
+            <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': dupProcessing}"></i>
+            Merge Hanzi Duplications
+          </h1>
+          <p class="desc">다중코드자를 통합합니다.</p>
+        </div>
+        <div class="col-md-6">
+          <h1>
+            <button class="btn btn-primary btn-lg" ng-click="mergeDuplications()">TN</button>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-model="rawTextdup" ng-trim="true"></textarea>
+        </div>
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-bind="mergedTextdup"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section variants merge" ng-controller="variantsMergeCtrl">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
           <h1>
             <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
-              Diff Texts
+            Merge Hanzi Variants
+          </h1>
+          <p class="desc">
+            이체자를 통합합니다.
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h1>
+            <button class="btn btn-primary btn-lg" ng-click="mergeVariants()">TN</button>
+            <div class="btn-group">
+              <a class="btn btn-lg btn-warning" ng-class="{'active': tntype==='general'}"
+                ng-click="tntype='general'">General</a>
+              <a class="btn btn-lg btn-warning" ng-class="{'active': tntype!=='general'}"
+                ng-click="tntype='extention'">KM-extention</a>
+            </div>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-model="rawTextvar" ng-trim="true"></textarea>
+        </div>
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-bind="mergedTextvar"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section replace" ng-controller="replaceCtrl">
+    <div class="container">
+
+      <form class="form-inline">
+        <div class="col-md-6">
+          <h1>Replace </h1>
+        </div>
+        <div class="col-md-6">
+          <h1>
+            <button type="submit" class="btn btn-primary btn-lg" ng-click="replaceAll()">Replace</button>
+            <button type="submit" class="btn btn-info btn-lg" ng-click="clone()">Clone</button>
+          </h1>
+        </div>
+
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Before(Regx)" ng-model="bf">
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="After" ng-model="af">
+        </div>
+
+      </form>
+
+      <div class="row">
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-model="rawText" ng-trim="true"></textarea>
+        </div>
+        <div class="col-md-6">
+          <textarea class="form-control" rows="5" style="height:30%" ng-bind="mergedText"></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section difftexts" ng-controller="diffTextCtrl">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-md-6">
+          <h1>
+            <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
+            Diff Texts
           </h1>
           <p class="desc">
             텍스트 차이를 검토합니다. <small>'Dump'를 누른 후 'Check result'에서 확인하세요.</small>
           </p>
-      </div>
-      <div class="col-md-6">
-      <h1>
-        <button class="btn btn-primary btn-lg" ng-click="dumpTexts()">Dump</button>
-					<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
-      </h1>
-      </div>
+        </div>
+        <div class="col-md-6">
+          <h1>
+            <button class="btn btn-primary btn-lg" ng-click="dumpTexts()">Dump</button>
+            <button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
+          </h1>
+        </div>
       </div>
 
       <div class="row">
         <div class="col-md-6">
-          <textarea class="form-control" rows="5"  style="height:30%"
-            ng-model="text1"
-          	ng-trim="true"
-          ></textarea>
+          <textarea class="form-control" rows="5" style="height:30%" ng-model="text1" ng-trim="true"></textarea>
         </div>
         <div class="col-md-6">
-          <textarea class="form-control" rows="5"  style="height:30%"
-            ng-model="text2"
-            ng-trim="true"
-          ></textarea>
+          <textarea class="form-control" rows="5" style="height:30%" ng-model="text2" ng-trim="true"></textarea>
         </div>
       </div>
 
@@ -218,59 +198,62 @@
   </div>
 
   <div class="section diffcheck" ng-controller="diffCtrl">
-      <div class="container">
-        <div class="row">
-			<div class="col-md-6">
-        		<h1>
-        			<i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
-        	  		Check result
-		  		</h1>
-			</div>
-			<div class="col-md-6">
-				<h1>
-					<button class="btn btn-primary btn-lg" ng-click="diff()">Diff</button>
-					<button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
-				</h1>
-		  	</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12" >
-				<div class="well" style="min-height:30%" ng-bind-html="diffrst" >
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1>
+            <i class="fa fa-spinner fa-fw" ng-class="{'fa-pulse': valProcessing}"></i>
+            Check result
+          </h1>
+        </div>
+        <div class="col-md-6">
+          <h1>
+            <button class="btn btn-primary btn-lg" ng-click="diff()">Diff</button>
+            <button class="btn btn-warning btn-lg" ng-click="reset()">Reset</button>
+          </h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="well" style="min-height:30%" ng-bind-html="diffrst">
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!--footer-->
     <footer class="section section-primary" ng-controller="footerCtrl">
       <div class="container">
 
         <div class="row">
-        	<h1>Appendix</h1>
-          	<div class="col-sm-12 text-left">
-				<b>Dict Ref</b>
-				<p>
-					<a class="btn btn-info btn-sm" ng-repeat="dict in dictRefAddress" ng-href="{{dict.url}}" target="_blank" ng-bind="dict.name"></a>
-				</p>
-				<b>External Ref</b>
-              	<p>
-  					<a class="btn btn-info btn-sm" ng-repeat="eref in externalRefs" ng-href="{{eref.url}}" target="_blank" ng-bind="eref.name"></a>
-              	</p>
-				<b>External Tools</b>
-              	<p>
-  					<a class="btn btn-info btn-sm" ng-repeat="etool in externalTools" ng-href="{{etool.url}}" target="_blank" ng-bind="etool.name"></a>
-              	</p>
+          <h1>Appendix</h1>
+          <div class="col-sm-12 text-left">
+            <b>Dict Ref</b>
+            <p>
+              <a class="btn btn-info btn-sm" ng-repeat="dict in dictRefAddress" ng-href="{{dict.url}}" target="_blank"
+                ng-bind="dict.name"></a>
+            </p>
+            <b>External Ref</b>
+            <p>
+              <a class="btn btn-info btn-sm" ng-repeat="eref in externalRefs" ng-href="{{eref.url}}" target="_blank"
+                ng-bind="eref.name"></a>
+            </p>
+            <b>External Tools</b>
+            <p>
+              <a class="btn btn-info btn-sm" ng-repeat="etool in externalTools" ng-href="{{etool.url}}" target="_blank"
+                ng-bind="etool.name"></a>
+            </p>
 
           </div>
 
         </div>
       </div>
     </footer>
-  </body>
+</body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.min.js"></script>
-<script src="https://cdn.rawgit.com/pinedance/f53dd1b0402c4574467c/raw/fe0bad830381fcd7aea7c8b959384fe800f12529/prototype.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.min.js"></script>
+<script src="assets/prototype.js"></script>
 <script src="controller.js"></script>
 
 </html>
