@@ -1,3 +1,9 @@
 rackup
 .*
 *.log
+
+### 맥 ###
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
